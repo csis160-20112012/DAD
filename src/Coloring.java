@@ -1,11 +1,9 @@
-
-
-
 import java.awt.Graphics;
 import java.awt.Color;
 import javax.swing.JPanel;
 
 public class Coloring extends JPanel {
+	//Algorithm for coloring the background ali nezz calling issue --
 	
 	public void paintComponent(Graphics g){
 		super.paintComponents(g);
