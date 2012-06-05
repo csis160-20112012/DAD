@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
@@ -41,13 +42,13 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 		// handle frame mouse motion event
 		addMouseMotionListener(new PaintMouseListener());
-		JButton button1 = new JButton("Thin Line");
+		JButton button1 = new JButton("Thin Pen");
 		button1.addActionListener(this);
 
-		JButton button2 = new JButton("Medium Line");
+		JButton button2 = new JButton("Medium Pen");
 		button2.addActionListener(this);
 
-		JButton button3 = new JButton("Thick Line");
+		JButton button3 = new JButton("Thick Pen");
 		button3.addActionListener(this);
 
 		JButton color = new JButton("Color");
@@ -63,7 +64,25 @@ public class PaintPanel extends JPanel implements ActionListener,
 		button6.addActionListener(this);
 
 		JButton button7 = new JButton("Empty Rect");
-		button6.addActionListener(this);
+		button7.addActionListener(this);
+
+		JButton button8 = new JButton("Filled Oval");
+		button8.addActionListener(this);
+
+		JButton button9 = new JButton("Filled Rect");
+		button9.addActionListener(this);
+
+		JRadioButton thin = new JRadioButton("Thin Line");
+		thin.addActionListener(this);
+		JRadioButton medium = new JRadioButton("Medium Line");
+		medium.addActionListener(this);
+		JRadioButton thick = new JRadioButton("Thick Line");
+		thick.addActionListener(this);
+
+		ButtonGroup lineOption = new ButtonGroup();
+		lineOption.add(thin);
+		lineOption.add(medium);
+		lineOption.add(thick);
 
 		psouth = new Panel();
 		psouth.setBackground(Color.LIGHT_GRAY);
@@ -78,33 +97,23 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 		this.add(color);
 		this.add(button5);
-		this.add(button4);
 		this.add(button1);
 		this.add(button2);
 		this.add(button3);
+		this.add(button4);
+		this.add(thin);
+		this.add(medium);
+		this.add(thick);
 		this.add(button6);
+		this.add(button8);
 		this.add(button7);
+		this.add(button9);
 		addMouseListener(this);
 
 	}
 
-	// draw oval in a 5-by-5 bounding box at specified location on window
 	public void paintComponent(Graphics g) {
-		// super.paintComponent( g ); // clears drawing area
-		// g.setColor(getColor());
-		// // draw all points in array
-		// switch (stroke){
-		//
-		// case 2:
-		// for ( int i = 0; i < pointCount; i++ )
-		// g.fillOval( points[ i ].x, points[ i ].y, 5, 5 );
-		// case 3:
-		// for (int i=0;i<pointCount;i++)
-		// g.fillOval(points[i].x, points[i].y, 10, 10);
-		// case 4:
-		// for (int i=0;i<pointCount;i++)
-		// g.fillOval(points[i].x, points[i].y, 20, 20);
-		// }
+
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -113,7 +122,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 			int h = this.getHeight();
 			_bufImage = (BufferedImage) (this.createImage(w, h));
 			gc = _bufImage.createGraphics();
-			gc.setColor(Color.BLUE);
+			gc.setColor(Color.BLACK);
 		}
 
 		g2.drawImage(_bufImage, null, 0, 0);
@@ -130,17 +139,15 @@ public class PaintPanel extends JPanel implements ActionListener,
 	// inner class PaintMouseListener has access to the paint points array
 	class PaintMouseListener extends MouseMotionAdapter {
 
-		// store drag coordinates and repaint
-		// Jasko: ovdje se odredjuje logika za crtanje olovkom. Provjerite ima
-		// li neki bolji nacin obzirom da se ne crtaju linije vec tackice pa ne
-		// ispada kao olovka...
+		
 		public void mouseDragged(MouseEvent e) {
 
 			switch (choice) {
 			case 2:
 				getColor();
-				gc.fillOval(e.getX(), e.getY(), 10, 10);
+				gc.fillOval(e.getX(), e.getY(), 6, 6);
 				repaint();
+				break;
 
 			case 6:
 
@@ -161,15 +168,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 			}
 		}
-		// if ( pointCount < points.length )
-		// {
-		// getColor();
-		// points[ pointCount ] = event.getPoint(); // find point
-		// pointCount++; // increment number of points in array
-		// draw();
-		// repaint(); // repaint JFrame
-		//
-		// }
+		
 	}
 
 	public void check() {
@@ -188,10 +187,67 @@ public class PaintPanel extends JPanel implements ActionListener,
 	}
 
 	public void draw() {
-		getColor();
-		gc.setStroke(new BasicStroke(6));
-		gc.drawLine(xStart, yStart, xEnd, yEnd);
-		repaint();
+		/*
+		 * getColor(); gc.setStroke(new BasicStroke(6)); gc.drawLine(xStart,
+		 * yStart, xEnd, yEnd); repaint();
+		 */
+		Graphics2D g = (Graphics2D) getGraphics();
+		int w = xEnd - xStart;
+		if (w < 0)
+			w = w * (-1);
+
+		int h = yEnd - yStart;
+		if (h < 0)
+			h = h * (-1);
+
+		switch (choice) {
+		case 3:
+
+			getColor();
+			gc.setStroke(new BasicStroke(6));
+			if (stroke == 0)
+				gc.setStroke(new BasicStroke(1));
+			if (stroke == 1)
+				gc.setStroke(new BasicStroke(3));
+			if (stroke == 2)
+				gc.setStroke(new BasicStroke(6));
+
+			gc.drawLine(xStart, yStart, xEnd, yEnd);
+			repaint();
+			break;
+		case 7:
+
+			getColor();
+			gc.setStroke(new BasicStroke(6));
+			gc.drawOval(xStart, yStart, w, h);
+			repaint();
+			break;
+		case 8:
+
+			getColor();
+			gc.setStroke(new BasicStroke(6));
+			gc.drawRect(xStart, yStart, w, h);
+			repaint();
+			break;
+
+		case 9:
+
+			getColor();
+			gc.setStroke(new BasicStroke(6));
+			gc.drawOval(xStart, yStart, w, h);
+			gc.fillOval(xStart, yStart, w, h);
+			repaint();
+			break;
+		case 10:
+
+			getColor();
+			gc.setStroke(new BasicStroke(6));
+			gc.drawRect(xStart, yStart, w, h);
+			gc.fillRect(xStart, yStart, w, h);
+			repaint();
+			break;
+
+		}
 
 	}
 
@@ -236,8 +292,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 	}
 
 	@Override
-	// Jasko: pogresno smo odredjivali koordinatu sa getWidth odnosno getHeight.
-	// Ne ide tako :)
+	
 	public void mouseReleased(MouseEvent e) {
 		xEnd = e.getX();
 		yEnd = e.getY();
@@ -256,15 +311,15 @@ public class PaintPanel extends JPanel implements ActionListener,
 				gc.setColor(bgColor);
 		}
 
-		if (e.getActionCommand().equals("Thin Line")) {
+		if (e.getActionCommand().equals("Thin Pen")) {
 			choice = 4;
 		}
 
-		if (e.getActionCommand().equals("Medium Line")) {
+		if (e.getActionCommand().equals("Medium Pen")) {
 			choice = 5;
 		}
 
-		if (e.getActionCommand().equals("Thick Line")) {
+		if (e.getActionCommand().equals("Thick Pen")) {
 			choice = 6;
 		}
 		if (e.getActionCommand().equals("Pen")) {
@@ -272,13 +327,34 @@ public class PaintPanel extends JPanel implements ActionListener,
 		}
 		if (e.getActionCommand().equals("Empty Rect")) {
 			choice = 8;
+
 		}
 		if (e.getActionCommand().equals("Empty Oval")) {
 			choice = 7;
 
 		}
-		if (e.getActionCommand().equals("Line"))
+		if (e.getActionCommand().equals("Filled Rect")) {
+			choice = 10;
+
+		}
+		if (e.getActionCommand().equals("Filled Oval")) {
+			choice = 9;
+
+		}
+		if (e.getActionCommand().equals("Line")) {
 			choice = 3;
+		}
+		if (e.getActionCommand().equals("Thin Line")) {
+			stroke = 0;
+		}
+
+		if (e.getActionCommand().equals("Medium Line")) {
+			stroke = 1;
+		}
+
+		if (e.getActionCommand().equals("Thick Line")) {
+			stroke = 2;
+		}
 
 	}
 }
