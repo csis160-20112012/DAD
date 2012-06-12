@@ -32,6 +32,9 @@ public class PaintPanel extends JPanel implements ActionListener,
 	int xEnd, yEnd;// final mouse positions
 	private JPanel buttonPanel; // Position of the buttons
 
+	/**
+	 * @author Dina
+	 */
 	// constructor
 	public PaintPanel() {
 		super();
@@ -138,9 +141,12 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * @author Dina Amela Dino
+	 */
+
 	// GUI implementation
 	public void paintComponent(Graphics g) {
-
 		super.paintComponent(g);
 
 		// creating graphics
@@ -162,7 +168,10 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	// implementing color chooser
+	/**
+	 * @author Dino
+	 */
+	// implementing colorchooser
 	public Color getColor() {
 		Color c = gc.getColor();
 		gc.setColor(c);
@@ -170,10 +179,13 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * @author Dina
+	 */
 	// implementing the shapes options with MouseListener
-	class PaintMouseListener extends MouseMotionAdapter {//dina
+	class PaintMouseListener extends MouseMotionAdapter {
 
-		// mouse dragged events
+		// mousedragged events
 		public void mouseDragged(MouseEvent e) {
 
 			switch (choice) {
@@ -196,13 +208,16 @@ public class PaintPanel extends JPanel implements ActionListener,
 		}
 	}
 
+	/**
+	 * @author Amela
+	 */
 	public void check() {
 		if (xStart > xEnd) { // swap variables if starting position of x
 								// variable is bigger than ending position
-			int z = 0;// declaring a new variable for swapping
+			int z = 0;// declaring a new variable for swaping
 			z = xStart;// putting the starting position of x
-			xStart = xEnd; // Swapping it with xEnd position
-			xEnd = z; // end of swapping
+			xStart = xEnd; // swaping it with xEnd position
+			xEnd = z; // end of swaping
 		}
 		if (yStart > yEnd) {
 			int z = 0;
@@ -212,6 +227,9 @@ public class PaintPanel extends JPanel implements ActionListener,
 		}
 	}
 
+	/**
+	 * @author Amela
+	 */
 	// method for drawing
 	public void draw() {
 
@@ -289,7 +307,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 		case 12: // calling to the case 11
 
-			if (clear == 1) { // applying the click on the frame clears it
+			if (clear == 1) { // applying the click on the frame cleares it
 				gc.clearRect(xStart, yStart, w, h);
 			} else {
 
@@ -327,6 +345,9 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * @author Dino
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) { // taking actual position of the
 												// mouse when pressed
@@ -338,6 +359,9 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * @author Dino
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) { // taking position of the mouse
 												// when released
@@ -349,7 +373,10 @@ public class PaintPanel extends JPanel implements ActionListener,
 		// TODO Auto-generated method stub
 
 	}
-	
+
+	/**
+	 * @author Dina
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -416,7 +443,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	public void setChoice(int choice) {
+	public void setChoice(int choice) {//
 		this.choice = choice;
 	}
 
