@@ -20,30 +20,40 @@ import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ * @author Dina Amela Dino
+ */
 public class PaintPanel extends JPanel implements ActionListener,
 		MouseListener, MouseMotionListener {
 
-	private BufferedImage _bufImage = null; // used for repainting components
-	Graphics2D gc; // used for graphics (paint component)
-	private int choice;// for deciding on which button we have clicked
-	private static int stroke, clear = 0; // used for JRadiobutton's, clear=0
-											// for clearing panel
-	int xStart, yStart;// initial positions of the mouse
-	int xEnd, yEnd;// final mouse positions
-	private JPanel buttonPanel; // Position of the buttons
-
+	private BufferedImage _bufImage = null;
+	/** used for repainting components */
+	Graphics2D gc;
+	/** used for graphics (paint component) */
+	private int choice;
+	/** for deciding on which button we have clicked */
+	private static int stroke, clear = 0;
 	/**
-	 * @author Dina
+	 * used for JRadiobutton's, clear=0 for clearing panel
 	 */
-	// constructor
+	int xStart, yStart;
+	/** initial positions of the mouse */
+	int xEnd, yEnd;
+	/** final mouse positions */
+	private JPanel buttonPanel;
+
+	/** Position of the buttons */
+
+	/** constructor */
 	public PaintPanel() {
 		super();
 		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(18, 6)); // reserved space for the
-														// button placement
-														// (rows, columns)
+		buttonPanel.setLayout(new GridLayout(18, 6));
+		/**
+		 * reserved space for the button placement (rows, columns)
+		 */
 
-		// handle frame mouse motion event
+		/** handle frame mouse motion event */
 		addMouseMotionListener(new PaintMouseListener());
 
 		JRadioButton button2 = new JRadioButton("Medium Pen");
@@ -88,18 +98,21 @@ public class PaintPanel extends JPanel implements ActionListener,
 		JRadioButton thick = new JRadioButton("Thick Line");
 		thick.addActionListener(this);
 
-		ButtonGroup lineOption = new ButtonGroup(); // adding sub-buttons for
-													// line
+		ButtonGroup lineOption = new ButtonGroup();
+		/**
+		 * adding sub-buttons for line
+		 */
 		lineOption.add(thin);
 		lineOption.add(medium);
 		lineOption.add(thick);
 
-		ButtonGroup penOption = new ButtonGroup(); // adding sub-buttons for pen
+		ButtonGroup penOption = new ButtonGroup();
+		/** adding sub-buttons for the pen */
 		penOption.add(button2);
 		penOption.add(button3);
 		penOption.add(button5);
 
-		// adding the order of the buttons
+		/** adding the order of the buttons */
 		this.add(color);
 		this.add(clear);
 		this.add(button10);
@@ -114,7 +127,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 		this.add(button8);
 		this.add(button7);
 		this.add(button9);
-		// adding mouse listener to the buttons
+		/** adding mouse listener to the buttons */
 		addMouseListener(this);
 
 		buttonPanel.add(color);
@@ -136,42 +149,40 @@ public class PaintPanel extends JPanel implements ActionListener,
 		buttonPanel.add(button9);
 
 		this.setLayout(new BorderLayout());
-		this.add(buttonPanel, BorderLayout.WEST); // positioning the buttons to
-													// the left side of panel
+		this.add(buttonPanel, BorderLayout.WEST);
+		/**
+		 * @param positioning
+		 *            the buttons to // the left side of panel
+		 */
 
 	}
 
-	/**
-	 * @author Dina Amela Dino
-	 */
-
-	// GUI implementation
+	/** GUI implementation */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		// creating graphics
+		/** creating graphics */
 		Graphics2D g2 = (Graphics2D) g;
 		if (_bufImage == null) {
 			int w = this.getWidth();
 			int h = this.getHeight();
-			_bufImage = (BufferedImage) (this.createImage(w, h)); // creating
-																	// background
-																	// for
-																	// drawing
+			_bufImage = (BufferedImage) (this.createImage(w, h));
+			/** creating background for drawing */
+
 			gc = _bufImage.createGraphics();
-			gc.setColor(Color.BLACK); // initial mouse drawing color set to
-										// black
+			gc.setColor(Color.BLACK);
+			/**
+			 * initial mouse drawing color set to black
+			 */
 
 		}
 
-		g2.drawImage(_bufImage, null, 0, 0); // drawing image
+		g2.drawImage(_bufImage, null, 0, 0);
+		/** drawing image */
 
 	}
 
-	/**
-	 * @author Dino
-	 */
-	// implementing colorchooser
+	/** implementing colorchooser */
 	public Color getColor() {
 		Color c = gc.getColor();
 		gc.setColor(c);
@@ -179,45 +190,50 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * @author Dina
-	 */
-	// implementing the shapes options with MouseListener
+	/** implementing the shapes options with MouseListener */
 	class PaintMouseListener extends MouseMotionAdapter {
 
-		// mousedragged events
+		/** mousedragged events */
 		public void mouseDragged(MouseEvent e) {
 
 			switch (choice) {
 
-			case 2: // sizes of pen
+			case 2:
+				/** sizes of pen */
 				getColor();
 				gc.setStroke(new BasicStroke(6));
-				if (stroke == 3) // thin pen
+				if (stroke == 3)
+					/** thin pen */
 					gc.fillOval(e.getX(), e.getY(), 5, 5);
-				if (stroke == 4) // medium pen
+				if (stroke == 4)
+					/** medium pen */
 					gc.fillOval(e.getX(), e.getY(), 10, 10);
-				if (stroke == 5) // thick pen
+				if (stroke == 5)
+					/** thick pen */
 					gc.fillOval(e.getX(), e.getY(), 20, 20);
 
-				gc.fillOval(e.getX(), e.getY(), 6, 6); // pen buttons
-				repaint(); // repainting the frame
+				gc.fillOval(e.getX(), e.getY(), 6, 6);
+				/** pen buttons */
+				repaint();
+				/** repainting the frame */
 				break;
 
 			}
 		}
 	}
 
-	/**
-	 * @author Amela
-	 */
 	public void check() {
-		if (xStart > xEnd) { // swap variables if starting position of x
-								// variable is bigger than ending position
-			int z = 0;// declaring a new variable for swaping
-			z = xStart;// putting the starting position of x
-			xStart = xEnd; // swaping it with xEnd position
-			xEnd = z; // end of swaping
+		if (xStart > xEnd) {
+			/** swap variables if starting position of x */
+			/** variable is bigger than ending position */
+			int z = 0;
+			/** declaring a new variable for swaping */
+			z = xStart;
+			/** putting the starting position of x */
+			xStart = xEnd;
+			/** swaping it with xEnd position */
+			xEnd = z;
+			/** end of swaping */
 		}
 		if (yStart > yEnd) {
 			int z = 0;
@@ -227,19 +243,17 @@ public class PaintPanel extends JPanel implements ActionListener,
 		}
 	}
 
-	/**
-	 * @author Amela
-	 */
-	// method for drawing
+	/** method for drawing */
 	public void draw() {
 
 		Graphics2D g = (Graphics2D) getGraphics();
-		int w = xEnd - xStart; // in case of negative width turn into positive
-								// value
+		int w = xEnd - xStart;
+		/** in case of negative width turn into positive value */
 		if (w < 0)
 			w = w * (-1);
 
-		int h = yEnd - yStart; // in case of negative height turn into positive
+		int h = yEnd - yStart;
+		/** in case of negative height turn into positive value */
 		if (h < 0)
 			h = h * (-1);
 
@@ -247,20 +261,25 @@ public class PaintPanel extends JPanel implements ActionListener,
 		case 3:
 
 			getColor();
-			gc.setStroke(new BasicStroke(6)); // Changes the width and size of
-												// the mouse stroke, point
+			gc.setStroke(new BasicStroke(6));
+			/** Changes the width and size of the mouse stroke, point */
 			if (getStroke() == 0)
-				gc.setStroke(new BasicStroke(1)); // thin line
+				gc.setStroke(new BasicStroke(1));
+			/** thin line */
 			if (getStroke() == 1)
-				gc.setStroke(new BasicStroke(3)); // medium line
+				gc.setStroke(new BasicStroke(3));
+			/** medium line */
 			if (getStroke() == 2)
-				gc.setStroke(new BasicStroke(6)); // thick line
+				gc.setStroke(new BasicStroke(6));
+			/** thick line */
 
-			gc.drawLine(xStart, yStart, xEnd, yEnd); // drawing the actual line
+			gc.drawLine(xStart, yStart, xEnd, yEnd);
+			/** drawing the actual line */
 			repaint();
 			break;
 
-		case 7: // drawing empty oval
+		case 7:
+			/** drawing empty oval */
 
 			getColor();
 			gc.setStroke(new BasicStroke(6));
@@ -268,7 +287,8 @@ public class PaintPanel extends JPanel implements ActionListener,
 			repaint();
 			break;
 
-		case 8: // drawing empty rectangle
+		case 8:
+			/** drawing empty rectangle */
 
 			getColor();
 			gc.setStroke(new BasicStroke(6));
@@ -276,7 +296,8 @@ public class PaintPanel extends JPanel implements ActionListener,
 			repaint();
 			break;
 
-		case 9:// drawing filled oval
+		case 9:
+			/** drawing filled oval */
 
 			getColor();
 			gc.setStroke(new BasicStroke(6));
@@ -285,7 +306,8 @@ public class PaintPanel extends JPanel implements ActionListener,
 			repaint();
 			break;
 
-		case 10: // drawing filled rectangle
+		case 10:
+			/** drawing filled rectangle */
 
 			getColor();
 			gc.setStroke(new BasicStroke(6));
@@ -294,20 +316,24 @@ public class PaintPanel extends JPanel implements ActionListener,
 			repaint();
 			break;
 
-		case 11: // Clear the frame
+		case 11:
+			/** Clear the frame */
 
 			repaint();
 			Color temp = gc.getColor();
 			gc.setColor(Color.WHITE);
-			gc.fillRect(0, 0, getWidth(), getHeight()); // clearing the whole
-														// frame
-			gc.setColor(temp); // white
+			gc.fillRect(0, 0, getWidth(), getHeight());
+			/** clearing the whole frame */
+			gc.setColor(temp);
+			/** white */
 			repaint();
 			break;
 
-		case 12: // calling to the case 11
+		case 12:
+			/** calling to the case 11 */
 
-			if (clear == 1) { // applying the click on the frame cleares it
+			if (clear == 1) {
+				/** applying the click on the frame cleares it */
 				gc.clearRect(xStart, yStart, w, h);
 			} else {
 
@@ -345,12 +371,11 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * @author Dino
-	 */
 	@Override
-	public void mousePressed(MouseEvent e) { // taking actual position of the
-												// mouse when pressed
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * taking actual position of the mouse when pressed
+		 */
 
 		xStart = e.getX();
 		yStart = e.getY();
@@ -359,12 +384,11 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * @author Dino
-	 */
 	@Override
-	public void mouseReleased(MouseEvent e) { // taking position of the mouse
-												// when released
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * taking position of the mouse when released
+		 */
 
 		xEnd = e.getX();
 		yEnd = e.getY();
@@ -374,16 +398,14 @@ public class PaintPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * @author Dina
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Cursor hand = new Cursor(Cursor.DEFAULT_CURSOR);// cursor type
+		Cursor hand = new Cursor(Cursor.DEFAULT_CURSOR);
+		/** cursor type */
 		setCursor(hand);
 
-		// implementing JColorChooser, box of colors
+		/** implementing JColorChooser, box of colors */
 		if (e.getActionCommand().equals("Color")) {
 			Color bgColor = JColorChooser.showDialog(this, "Pick your colour",
 					getBackground());
@@ -391,8 +413,10 @@ public class PaintPanel extends JPanel implements ActionListener,
 				gc.setColor(bgColor);
 		}
 
-		// setting strokes and cases for implementing methods for draw and
-		// paintComponent
+		/**
+		 * setting strokes and cases for implementing methods for draw and
+		 * paintComponent
+		 */
 		if (e.getActionCommand().equals("Thin Pen")) {
 			setStroke(3);
 		}
