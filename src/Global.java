@@ -1,10 +1,14 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
-import java.awt.Color;
+import javax.swing.JPanel;
 
-
-public  class Global {
- public static Color penColor;
+public class Global{
 	
-
-	
+	public static void main (String[] args){
+		
+		JPanel app2=new JPanel(); //creating new JPanel object for buttons placement
+		
+		app2.setLayout( new GridLayout(18,6)); //dimensions of buttons
+	}
 }
