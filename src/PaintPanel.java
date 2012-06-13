@@ -196,7 +196,7 @@ public class PaintPanel extends JPanel implements ActionListener,
 		/** mousedragged events */
 		public void mouseDragged(MouseEvent e) {
 
-			switch (choice) {
+			switch (getChoice()) {
 
 			case 2:
 				/** sizes of pen */
